@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
     <style>
       /* Ensuring the body takes full height and uses flexbox */
       html, body {
@@ -22,7 +23,6 @@
 
       .container {
         flex: 1;
-        padding-top: 100px; /* Increased padding to give space for the title */
         padding-bottom: 60px; 
       }
 
@@ -39,6 +39,11 @@
 
       .footer img {
         max-width: 100px; 
+        margin-top: 10px;
+      }
+
+      /* Space between buttons */
+      .control + .control {
         margin-top: 10px;
       }
     </style>
@@ -105,31 +110,78 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="field">
-          <div class="control">
-            <button class="button is-black is-large" type="submit">SUBMIT</button>
-          </div>
+        <div class="control">
+          <button class="button is-black is-large" type="submit">SUBMIT</button>
         </div>
 
-        <!-- Recommendations/Graphs Button (Moved closer) -->
-        <div class="field" style="margin-top: 10px;"> <!-- Reduced margin-top -->
-          <div class="control">
-            <button class="button is-black is-large" type="button" onclick="window.location.href='results.html'">RECOMMENDATIONS/GRAPHS</button>
-          </div>
+        <!-- Recommendations/Graphs Button -->
+        <div class="control">
+          <button class="button is-black is-large" id="recommendations-btn" type="button">RECOMMENDATIONS/GRAPHS</button>
         </div>
       </form>
     </div>
 
+    <!-- Modal -->
+    <div id="confirmation-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box has-text-centered">
+          <h2 class="title is-4">REPORT SUBMITTED, BROTHER!!</h2>
+          <p>DATA HAS BEEN COLLECTED WOULD YOU LIKE TO CONTINUE!?!</p>
+          <div class="buttons is-vertical is-centered">
+            <button id="close-modal" class="button is-black has-text-white">OK</button>
+            <button id="reenter-report" class="button is-danger has-text-white">Re-enter Report</button>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <script>
+      document.getElementById('tracker-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const time = document.getElementById('time-of-day').value;
+        const day = document.getElementById('day-of-week').value;
+        const server = document.getElementById('server').value;
+
+        const report = { time, day, server };
+
+        const results = JSON.parse(localStorage.getItem('results')) || [];
+        results.push(report);
+        localStorage.setItem('results', JSON.stringify(results));
+
+        // Show the confirmation modal
+        const modal = document.getElementById('confirmation-modal');
+        modal.classList.add('is-active');
+
+        // Close the modal when the user clicks "OK"
+        document.getElementById('close-modal').addEventListener('click', function() {
+          modal.classList.remove('is-active');
+          window.location.href = 'results.html'; // Redirect to results page
+        });
+
+        // Re-enter report functionality
+        document.getElementById('reenter-report').addEventListener('click', function() {
+          modal.classList.remove('is-active');
+          document.getElementById('tracker-form').reset(); // Reset the form
+        });
+      });
+
+      // Redirect to results page when the "RECOMMENDATIONS/GRAPHS" button is clicked
+      document.getElementById('recommendations-btn').addEventListener('click', function() {
+        window.location.href = 'results.html'; // Redirect to results page
+      });
+    </script>
+
     <!-- Footer Section -->
     <footer class="footer">
-      <div class="footer">
-        <div class="footer-content">
-            <span class="footer-text">
-                CREATED BY <img class="footer-inline-gif" src="images/smiley-emoji.gif" alt="smiley emoji">TIMOTHY MCGRATH
-            </span>
-            <span class="footer-credits">USING HTML, CSS, BULMA, AND TOO MANY GOOGLE SEARCHES</span>
-        </div>
-      </div>    
+      <div class="footer-content">
+          <span class="footer-text">
+              CREATED BY <img class="footer-inline-gif" src="images/smiley-emoji.gif" alt="smiley emoji">TIMOTHY MCGRATH
+          </span>
+          <span class="footer-credits">USING HTML, CSS, BULMA, AND TOO MANY GOOGLE SEARCHES</span>
+      </div>
     </footer>
   </body>
 </html>
