@@ -1,0 +1,357 @@
+/* General Styling */
+body {
+    background-image: url('images/soldiers.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #f1f1f1;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center; /* Horizontally centers the content */
+    align-items: center; /* Vertically centers the content */
+    height: 100vh; /* Full viewport height */
+    margin: 0;
+    text-align: center; /* Ensures text is centered */
+    position: relative; /* Needed for the overlay */
+}
+
+/* Semi-Transparent Overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent black overlay */
+    z-index: -1; /* Puts the overlay behind the content */
+}
+
+/* Transparent Content Box */
+.content-box {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8); /* Soft shadow for depth */
+    width: 100%;
+    max-width: 600px; /* Centered box with limited width */
+}
+
+/* Title Styling */
+h1.title.main-title {
+    color: #006400; /* Dark green fallback */
+    background-image: linear-gradient(45deg, #006400, #228B22, #2E8B57);
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    filter: brightness(1.2); /* Brighten the camo pattern */
+    transition: transform 0.3s ease, filter 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 1px 1px 2px #000, -1px -1px 2px #555;
+    color: #666;
+    font-family: Abkad, 'Press Start 2P', sans-serif !important;
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background-image: url('images/flat-design-digital-camo-pattern.jpg'); /* Link to your camo image */
+    background-size: cover; /* Make the camo image cover the text area */
+    background-position: center;
+    -webkit-background-clip: text; /* Clips the background to the text */
+    -webkit-text-fill-color: transparent; /* Makes the text transparent to show the background */
+    animation: fadeIn 3s ease-out;
+}
+
+/* Optional: Add fade-in animation */
+@keyframes shiftCamo {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+h1.title.main-title {
+    animation: shiftCamo 10s linear infinite;
+}
+
+/* Torn apart effect (by using a pseudo-element) */
+.title.main-title::after {
+    content: '';
+    position: absolute;
+    top: 90%;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.8); /* Simulate torn bottom edge */
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 5%, 0 100%, 100% 100%); /* Make it jagged */
+}
+
+/* Subtitle Styling */
+.subtitle.subtitle-text {
+    font-family: 'Press Start 2P', VT323, sans-serif;
+    color: #ffffff; /* White text */
+    font-size: 1.0rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold; /* Make the subtitle bold */
+    text-align: center; /* Ensure subtitle is centered */
+}
+
+/* Space between sentences inside the subtitle */
+.subtitle.subtitle-text .larger-text {
+    font-size: 1.4rem; /* Increase font size */
+    margin-bottom: 1rem; /* Add 1 line of space after this sentence */
+    display: block; /* Ensure it behaves like a block element */
+}
+
+/* Other subtitle styling */
+.subtitle.subtitle-text .button-like-text {
+    color: #fff; /* White text */
+    font-family: 'Press Start 2P', VT323, sans-serif;
+    background-color: #000; /* Black background like a button */
+    font-weight: bold; /* Bold font */
+    padding: 0.5rem 1rem; /* Padding for a button-like appearance */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px #f000, 0 0 20px #f000; /* Red glowing effect */
+    display: inline-block;
+}
+
+.subtitle.subtitle-text .submit-text {
+    font-family: 'Press Start 2P', VT323, sans-serif;
+    color: #fff; /* White text */
+    background-color: #000; /* Black background like a button */
+    font-weight: bold; /* Bold font */
+    padding: 0.5rem 1rem; /* Padding for a button-like appearance */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px #f000, 0 0 20px #f000; /* Red glowing effect */
+    display: inline-block;
+}
+
+/* Labels for dropdown (Time of Day, Day of Week, Server) */
+label {
+    font-family: 'Press Start 2P', sans-serif !important;
+    font-size: 1.6rem;
+    color: #228B22 !important; 
+    margin-bottom: 0.5rem;
+}
+
+/* Dropdown (Select) Styling */
+.select select {
+    font-family: DotGothic16, sans-serif;
+    background-color: #000 !important; /* Black background */
+    color: #fff !important; /* White text */
+    border: 1px solid #444; /* Slight border for contrast */
+    font-size: 1.2rem;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase;
+    appearance: none; /* Remove default dropdown arrow */
+    -webkit-appearance: none; /* Remove default dropdown arrow for WebKit browsers */
+    -moz-appearance: none; /* Remove default dropdown arrow for Firefox */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zZWFyY2h5Ij4KPHBhdGggZD0iTTEyLjUgMTQuNVYyLjVIMy41VjExLjVsMy41LTQgMCAwIDEuOC00LjciLz4KPC9zdmc+Cg=='); /* Green arrow (SVG) */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px 20px; /* Adjust arrow size */
+}
+
+/* Dropdown Highlighted Option */
+.select select option:checked {
+    background-color: #006400; /* Green background for selected option */
+    color: white; /* White text for selected option */
+}
+
+/* Dropdown Hovered Option */
+.select select option:hover {
+    background-color: #006400; /* Darker black for option hover */
+    color: #fff; /* Ensure text remains white */
+}
+
+/* Dropdown Focused State */
+.select select:focus {
+    border-color: #f000; /* Red border on focus */
+    outline: none;
+}
+
+/* Button Styling */
+.button {
+    font-family: 'Press Start 2P', VT323, sans-serif;
+    margin: 1rem 0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.button:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #f000; /* Glowing effect on hover */
+}
+
+.button:active {
+    background-color: #444;
+    transform: translateY(0);
+}
+
+.button:focus-visible {
+    outline: 2px solid #F000;
+    outline-offset: 4px;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+    .title.main-title {
+        font-size: 4rem;
+    }
+
+    .subtitle.subtitle-text {
+        font-size: 1.4rem;
+    }
+
+    label {
+        font-size: 1.2rem;
+    }
+
+    .button {
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #F000;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f000;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+/* Space between sentence and dropdown menus */
+.track-report-text {
+    font-family: 'Press Start 2P', VT323, sans-serif;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 2rem; /* Space after the sentence */
+}
+
+/* Space between dropdowns */
+.dropdown-container {
+    margin-top: 2rem; /* Add some space above the dropdown section */
+}
+
+/* Dropdown Styling */
+.select select {
+    font-family: DotGothic16, sans-serif;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    font-size: 1.2rem;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Vertical Button Layout */
+.buttons.is-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Add space between buttons */
+.buttons.is-vertical .button {
+    margin-bottom: 1rem; /* Space between buttons */
+}
+
+/* Dark theme for modal background */
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.7); 
+}
+
+.modal-content {
+    background-color: #333; 
+    color: #000; /* White text color */
+    font-weight: bold; /* Make the text bold */
+    border-radius: 8px; /* Optional: round the corners */
+    padding: 0rem; /* Add padding for spacing inside the modal */
+}
+
+/* Dark button styles */
+.button.is-black {
+    background-color: #000; 
+    color: #333; 
+    border: none;
+}
+
+.button.is-danger {
+    background-color: #cc0000; /* Red button for re-enter */
+    color: white; /* White text */
+}
+
+/* Modal box */
+.box {
+    background-color: #333; /* Dark background */
+    color: #000; /* White text color */
+    font-weight: bold; /* Bold text */
+}
+
+/* Additional styles for title text */
+.title.is-4 {
+    color: #000; 
+}
+.footer {
+    background-color: transparent;
+    text-align: center;
+    padding: 1rem 0;
+    width: 100%;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px; 
+}
+
+.footer-text {
+    color: #32CD32; 
+    font-size: 0.7rem; 
+    font-weight: bold; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    margin: 0; 
+    text-align: center; 
+}
+
+.footer-text:last-child {
+    margin-top: 5px; 
+}
+
+.footer-inline-gif {
+    width: 80px; /* Adjust GIF size to fit with the smaller text */
+    height: auto;
+    margin: 0 5px; /* Add space around the GIF */
+}
+
+/* Specific styling for "USING HTML, JAVASCRIPT, AND BULMA" */
+.footer-credits {
+    font-size: 0.7rem; /* Resize this text specifically to 0.7rem */
+    color: #32CD32; /* Match the footer text color */
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add consistent shadow effect */
+}
+.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }

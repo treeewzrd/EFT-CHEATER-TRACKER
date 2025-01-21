@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results Overview</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Function to play click sound
+    function playClickSound() {
+      const clickSound = new Audio('https://www.soundjay.com/button/beep-07.wav'); // URL for the click sound
+      clickSound.play();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add event listener to buttons for sound effect
+      const buttons = document.querySelectorAll('.button');
+      buttons.forEach(button => {
+        button.addEventListener('click', playClickSound);
+      });
+
+      // Get data from localStorage (or use an empty array if none exists)
+      const results = JSON.parse(localStorage.getItem('results')) || [];
+
+      // Initialize counters for each category
+      const timeOfDayCounts = {
+        '0HRS-600HRS': 0,
+        '700HRS-1200HRS': 0,
+        '1300HRS-1800HRS': 0,
+        '1900HRS-2400HRS': 0
+      };
+      const dayOfWeekCounts = {
+        'Monday': 0,
+        'Tuesday': 0,
+        'Wednesday': 0,
+        'Thursday': 0,
+        'Friday': 0,
+        'Saturday': 0,
+        'Sunday': 0
+      };
+      const serverCounts = {
+        'EAST': 0,
+        'WEST': 0,
+        'CENTRAL': 0,
+        'SOUTH': 0,
+        'SOUTHEAST': 0,
+        'SOUTHWEST': 0
+      };
+
+      // Count the entries by time, day, and server
+      results.forEach(report => {
+        timeOfDayCounts[report.time]++;
+        dayOfWeekCounts[report.day]++;
+        serverCounts[report.server]++;
+      });
+
+      // Find the best server (least amount of reports)
+      const bestServer = Object.keys(serverCounts).reduce((a, b) => serverCounts[a] < serverCounts[b] ? a : b);
+      const bestTime = Object.keys(timeOfDayCounts).reduce((a, b) => timeOfDayCounts[a] < timeOfDayCounts[b] ? a : b);
+      const bestDay = Object.keys(dayOfWeekCounts).reduce((a, b) => dayOfWeekCounts[a] < dayOfWeekCounts[b] ? a : b);
+
+      // Update the recommendations section
+      document.getElementById('best-server').textContent = bestServer;
+      document.getElementById('best-time').textContent = bestTime;
+      document.getElementById('best-day').textContent = bestDay;
+
+      // Create the Pie Chart for Time of Day
+      const timeOfDayCtx = document.getElementById('time-of-day-chart').getContext('2d');
+      new Chart(timeOfDayCtx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(timeOfDayCounts),
+          datasets: [{
+            label: 'Entries by Time of Day',
+            data: Object.values(timeOfDayCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40'],
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  return `${context.label}: ${context.raw} reports`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Create the Pie Chart for Day of Week
+      const dayOfWeekCtx = document.getElementById('day-of-week-chart').getContext('2d');
+      new Chart(dayOfWeekCtx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(dayOfWeekCounts),
+          datasets: [{
+            label: 'Entries by Day of Week',
+            data: Object.values(dayOfWeekCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF', '#FF66B2'],
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  return `${context.label}: ${context.raw} reports`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Create the Pie Chart for Server
+      const serverCtx = document.getElementById('server-chart').getContext('2d');
+      new Chart(serverCtx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(serverCounts),
+          datasets: [{
+            label: 'Entries by Server',
+            data: Object.values(serverCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF'],
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  return `${context.label}: ${context.raw} reports`;
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+  <style>
+    body {
+      background-image: url('images/knight.jpg'); /* Relative path */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+      font-family: 'Press Start 2P', cursive; /* Apply the font */
+    }
+
+    .section {
+      background-color: rgba(0, 0, 0, 0.7); /* Dark transparent background */
+      padding: 2rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    }
+
+    .title {
+      color: #fff;
+      font-size: 3rem; /* Increased size */
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.5rem; /* Added space between title and chart */
+      font-family: 'Press Start 2P', cursive; /* Ensure titles use the font */
+    }
+
+    .subtitle {
+      color: #d3d3d3;
+      font-size: 2rem; /* Increased size */
+      text-align: center;
+      margin-bottom: 3rem; /* Added space between subtitle and chart */
+      font-family: 'Press Start 2P', cursive; /* Ensure subtitles use the font */
+    }
+
+    .canvas-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem; /* Reduced space between canvas */
+    }
+
+    canvas {
+      max-width: 300px; /* Smaller charts */
+      max-height: 300px; /* Smaller charts */
+      width: 100%; /* Full width within max size */
+      height: auto;
+    }
+
+    .recommendations,
+    .chart-section {
+      background-color: rgba(0, 0, 0, 0.7); /* Dark transparent background */
+      padding: 2rem;
+      margin-bottom: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+      text-align: center;
+    }
+
+    .recommendations p {
+      color: #32CD32; /* Set text color to green */
+    }
+
+    .recommendations span {
+      color: #32CD32; /* Ensure text inside span is also green */
+    }
+
+    .recommendations h2, .recommendations strong {
+      color: #fff; /* Ensure headings and strong text are white */
+    }
+
+    .buttons.is-centered {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .button.is-black {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .button.is-black:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+
+      <!-- Recommendations Section -->
+      <div class="recommendations">
+        <h2 class="subtitle">RECOMMENDATIONS</h2>
+        <p><strong>Best Server to Choose:</strong> <span id="best-server"></span></p>
+        <p><strong>Recommended Time to Play:</strong> <span id="best-time"></span></p>
+        <p><strong>Best Day of Week:</strong> <span id="best-day"></span></p>
+      </div>
+
+      <h1 class="title">Results Overview</h1>
+
+      <!-- Pie Charts -->
+      <div class="chart-section">
+        <h2 class="subtitle">Entries by Time of Day (6hr Blocks)</h2>
+        <div class="canvas-container">
+          <canvas id="time-of-day-chart" width="300" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h2 class="subtitle">Entries by Day of Week</h2>
+        <div class="canvas-container">
+          <canvas id="day-of-week-chart" width="300" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h2 class="subtitle">Entries by Server</h2>
+        <div class="canvas-container">
+          <canvas id="server-chart" width="300" height="300"></canvas>
+        </div>
+      </div>
+
+      <!-- Button stack -->
+      <div class="buttons is-centered">
+        <a href="data.html" class="button is-black is-large">GO TO DATA ENTRIES</a>
+        <a href="index.html" class="button is-black is-large">BACK TO MAIN PAGE</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

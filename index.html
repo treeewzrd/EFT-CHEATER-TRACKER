@@ -1,11 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <title>EFT Cheater Tracker</title>
+    <link rel="stylesheet" href="project.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+      /* Ensuring the body takes full height and uses flexbox */
+      html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        background-image: url('images/soldiers.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+
+      .container {
+        flex: 1;
+        padding-top: 100px; /* Increased padding to give space for the title */
+        padding-bottom: 60px; 
+      }
+
+      .footer {
+        background-color: transparent;
+        color: #32CD32; 
+        text-align: center;
+        padding: 1rem 0;
+        width: 100%;
+        position: relative;
+        bottom: 0;
+        font-family: 'Press Start 2P', cursive;
+      }
+
+      .footer img {
+        max-width: 100px; 
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Centered container with transparent background -->
+    <div class="container content-box">
+      <h1 class="title main-title" style="color: #32CD32;">EFT CHEATER TRACKER</h1>
+      <h2 class="subtitle subtitle-text">
+        <span class="larger-text">TRACK REPORTS OF CHEATERS IN ESCAPE FROM TARKOV</span>
+        <br>
+        <span class="button-like-text">AFTER FILLING IN ALL THREE DROPDOWN MENUS</span>
+        <br>
+        <span class="submit-text">CLICK <strong>SUBMIT</strong> BELOW TO SEND YOUR REPORT</span>
+      </h2>
+
+      <!-- Form for Selecting Details -->
+      <form id="tracker-form">
+        <!-- Time of Day -->
+        <div class="field">
+          <label class="label">Time of Day</label>
+          <div class="control select">
+            <select id="time-of-day" required>
+              <option value="" disabled selected>Select time of day</option>
+              <option value="0HRS-600HRS">0HRS-600HRS</option>
+              <option value="700HRS-1200HRS">700HRS-1200HRS</option>
+              <option value="1300HRS-1800HRS">1300HRS-18OOHRS</option>
+              <option value="1900HRS-2400HRS">1900HRS-2400HRS</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Day of the Week -->
+        <div class="field">
+          <label class="label">Day of the Week</label>
+          <div class="control select">
+            <select id="day-of-week" required>
+              <option value="" disabled selected>Select day</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Server -->
+        <div class="field">
+          <label class="label">Server</label>
+          <div class="control select">
+            <select id="server" required>
+              <option value="" disabled selected>Select server</option>
+              <option value="EAST">EAST</option>
+              <option value="WEST">WEST</option>
+              <option value="CENTRAL">CENTRAL</option>
+              <option value="SOUTH">SOUTH</option>
+              <option value="SOUTHEAST">SOUTHEAST</option>
+              <option value="SOUTHWEST">SOUTHWEST</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="field">
+          <div class="control">
+            <button class="button is-black is-large" type="submit">SUBMIT</button>
+          </div>
+        </div>
+
+        <!-- Recommendations/Graphs Button (Moved closer) -->
+        <div class="field" style="margin-top: 10px;"> <!-- Reduced margin-top -->
+          <div class="control">
+            <button class="button is-black is-large" type="button" onclick="window.location.href='results.html'">RECOMMENDATIONS/GRAPHS</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="footer">
+        <div class="footer-content">
+            <span class="footer-text">
+                CREATED BY <img class="footer-inline-gif" src="images/smiley-emoji.gif" alt="smiley emoji">TIMOTHY MCGRATH
+            </span>
+            <span class="footer-credits">USING HTML, CSS, BULMA, AND TOO MANY GOOGLE SEARCHES</span>
+        </div>
+      </div>    
+    </footer>
+  </body>
 </html>

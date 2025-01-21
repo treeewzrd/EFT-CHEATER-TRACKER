@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATA / ENTRIES</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-image: url('images/sthurman.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #f1f1f1;
+      font-family: 'Press Start 2P', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 1000px;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+    }
+
+    .title {
+      color: #fff;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .result-item {
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      padding: 1rem;
+      color: #fff;
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .result-number {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .button {
+      margin: 1rem 0;
+      border-radius: 8px;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Press Start 2P', sans-serif;
+    }
+
+    .button:hover {
+      background-color: #333;
+    }
+
+    .button.is-danger {
+      background-color: #e74c3c;
+    }
+
+    .button.is-danger:hover {
+      background-color: #c0392b;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .pagination .current-page {
+      font-weight: bold;
+      color: #00d1b2;
+    }
+
+    .buttons.is-centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Modal Styles */
+    .modal-background {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      color: black;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .modal-card-foot {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .modal .button {
+      display: block;
+      margin: 0.5rem auto;
+      border-radius: 0;
+      border: 2px solid #333;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Press Start 2P', sans-serif;
+    }
+
+    .modal .button:hover {
+      background-color: #333;
+    }
+
+    .modal .button.is-danger {
+      background-color: #e74c3c;
+    }
+
+    .modal .button.is-danger:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">MAYBE THEY WERE JUST BETTER!?</h1>
+
+    <div id="results" class="results-grid"></div>
+
+    <div class="pagination">
+      <button class="button is-medium" id="previous-page" aria-label="Previous Page">OLDER ENTRIES</button>
+      <span id="page-indicator" class="current-page"></span>
+      <button class="button is-medium" id="next-page" aria-label="Next Page">NEWEST ENTRIES</button>
+    </div>
+
+    <div class="buttons is-centered">
+      <button class="button is-medium" onclick="window.location.href='index.html'">BACK TO TITLE PAGE</button>
+      <button class="button is-medium" onclick="window.location.href='results.html'">RECOMMENDATIONS/GRAPHS</button>
+      <button class="button is-danger is-medium" id="delete-all-btn">DELETE ALL DATA</button>
+    </div>
+  </div>
+
+  <!-- Modal: Delete Entry -->
+  <div id="delete-entry-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <p>DO YOU WISH TO DELETE THIS ENTRY!?</p>
+    </div>
+    <div class="modal-card-foot">
+      <button class="button is-primary" id="confirm-delete-entry">DELETE</button>
+      <button class="button is-danger" id="cancel-delete-entry">CANCEL</button>
+    </div>
+  </div>
+
+  <!-- Modal: Delete All Data -->
+  <div id="delete-all-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <p>ARE YOU SURE YOU WANT TO DELETE ALL DATA ENTRIES, BROTHER!?</p>
+    </div>
+    <div class="modal-card-foot">
+      <button class="button is-primary" id="confirm-delete-all">DELETE ALL ENTRIES</button>
+      <button class="button is-danger" id="cancel-delete-all">CANCEL</button>
+    </div>
+  </div>
+
+  <script>
+    const itemsPerPage = 8;
+    let currentPage = 0;
+    let data = JSON.parse(localStorage.getItem('results')) || [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updatePageIndicator();
+      displayEntries(data, currentPage);
+
+      document.getElementById('previous-page').addEventListener('click', () => {
+        if (currentPage > 0) currentPage--;
+        updatePageIndicator();
+        displayEntries(data, currentPage);
+      });
+
+      document.getElementById('next-page').addEventListener('click', () => {
+        if ((currentPage + 1) * itemsPerPage < data.length) currentPage++;
+        updatePageIndicator();
+        displayEntries(data, currentPage);
+      });
+
+      document.getElementById('delete-all-btn').addEventListener('click', () => {
+        document.getElementById('delete-all-modal').classList.add('is-active');
+      });
+    });
+
+    function displayEntries(data, page) {
+      const resultsContainer = document.getElementById('results');
+      const start = page * itemsPerPage;
+      const currentData = [...data].reverse().slice(start, start + itemsPerPage);
+
+      resultsContainer.innerHTML = currentData.length
+        ? currentData.map((entry, index) => ` 
+            <div class="result-item">
+              <div class="result-number">Entry #${start + index + 1}</div>
+              <p><strong>Time:</strong> ${entry.time}</p>
+              <p><strong>Day:</strong> ${entry.day}</p>
+              <p><strong>Server:</strong> ${entry.server}</p>
+              <button class="button is-danger delete-btn" onclick="openDeleteEntryModal(${index})">Delete Entry</button>
+            </div>
+          `).join('') 
+        : '<p>No more entries to show.</p>';
+    }
+
+    function openDeleteEntryModal(index) {
+      document.getElementById('delete-entry-modal').classList.add('is-active');
+
+      document.getElementById('confirm-delete-entry').onclick = () => {
+        deleteEntry(index);
+        closeDeleteEntryModal();
+      };
+
+      document.getElementById('cancel-delete-entry').onclick = closeDeleteEntryModal;
+    }
+
+    function deleteEntry(index) {
+      data.splice(index, 1);
+      localStorage.setItem('results', JSON.stringify(data));
+      location.reload();
+    }
+
+    function closeDeleteEntryModal() {
+      document.getElementById('delete-entry-modal').classList.remove('is-active');
+    }
+
+    // Delete all data modal functionality
+    document.getElementById('confirm-delete-all').addEventListener('click', () => {
+      localStorage.removeItem('results');
+      location.reload();
+    });
+
+    document.getElementById('cancel-delete-all').addEventListener('click', () => {
+      document.getElementById('delete-all-modal').classList.remove('is-active');
+    });
+
+    function updatePageIndicator() {
+      document.getElementById('page-indicator').innerText = `Page ${currentPage + 1}`;
+    }
+  </script>
+</body>
+</html>
