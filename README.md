@@ -124,11 +124,7 @@ Here’s how you can get involved:
 
 1. Reporting Bugs:
 If you encounter a bug or issue with the app, feel free to open an issue on the GitHub repository. Provide as much information as possible, including:
-
-A clear description of the issue
-Steps to reproduce the bug
-Expected vs. actual behavior
-Screenshots (if applicable)
+A clear description of the issue Steps to reproduce the bug Expected vs. actual behavior Screenshots (if applicable)
 
 2. Feature Requests:
 If you have a feature idea that you think would improve EFT Cheater Tracker, open an issue with the "Feature Request" label. Provide a detailed description of the feature and why it would benefit the app.
@@ -177,6 +173,7 @@ Test coverage helps us measure how much of the code is covered by tests. To chec
 ```bash
 npm run test:coverage
 This will generate a report showing how much of the code is tested and which parts need more coverage.
+
 
 Example Tests
 If you'd like to see examples of tests in action, refer to the files in the tests/ directory. These include basic tests for various app features such as tracking cheaters, managing data, and generating reports.
